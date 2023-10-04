@@ -3,7 +3,7 @@ pipeline {
     parameters{
         string(name:'Env',defaultValue:'Test',description:'version to deploy')
         booleanParam(name:'executeTests',defaultValue:true,description:'decided to run')
-        choice(name:'APPVERSION',choices['1:1','2:1'])
+        choice(name:'APPVERSION',choices:['1:1','2:1'])
     }
         stages {
             stage('Compile'){
