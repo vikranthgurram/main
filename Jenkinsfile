@@ -13,6 +13,11 @@ pipeline {
                }
            }
            stage('Unittest'){
+               when{
+                   expression{
+                       params.executeTests ==true
+                   }
+               } 
                steps{
                    script{
                        echo'Testing the code in ${params:Env} env'
