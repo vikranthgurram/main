@@ -24,6 +24,11 @@ pipeline {
                        echo'Testing the code in ${params:Env} env'
                    }
                }
+               post{
+                   always{
+                       junit 'target/surefire-reports/*.xml'
+                   }
+               }
            }
            
            stage('Package'){
