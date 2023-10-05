@@ -39,9 +39,9 @@ pipeline {
             // }
             agent any
             steps {
-                script{
-            sshagent(['Node3_key']) {
-                    echo "Packaging the code on new slave"
+               // script{
+            // sshagent(['Node3_key']) {
+              //      echo "Packaging the code on new slave"
                      sh "mvn package"
                    // ss "ssh  -o StrictHostKeyChecking=no ec2-user@172.31.90.129 'bash ~/server-script.sh'"              
                    // sh "scp -o StrictHostKeyChecking=no server-config.sh ${BUILD_SERVER_IP}:/home/ec2-user"
@@ -49,9 +49,9 @@ pipeline {
                 }
                
               
-            }             
+          //  }             
          }
-    }
+   // }
     //    stage('Deploy'){
       //      agent {label 'linux_slave'}
         //    input{
