@@ -10,6 +10,7 @@ pipeline {
    // }
 
     stages {
+         agent {label 'Node2AWS'}
         stage('Compile') {
             agent any
             steps {
