@@ -32,7 +32,7 @@ pipeline {
            }
            
            stage('Package'){
-               agent {lable 'Node2AWS'}
+               agent {label 'Node2AWS'}
                input{
                     message "Please approve to deploy"
                     ok "yes, to deploy"
