@@ -24,14 +24,15 @@ pipeline {
                        echo'Testing the code in ${params:Env} env'
                    }
                }
-               post{
-                   always{
-                       junit 'target/surefire-reports/*.xml'
-                   }
-               }
+              // post{
+                //   always{
+                  //     junit 'target/surefire-reports/*.xml'
+                 //  }
+              // }
            }
            
            stage('Package'){
+               agent {lable 'Node2AWS'}
                input{
                     message "Please approve to deploy"
                     ok "yes, to deploy"
