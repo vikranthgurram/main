@@ -49,9 +49,9 @@ pipeline {
                 }
                
               
-            }           
-        }
-        }
+            }             
+         }
+    }
     //    stage('Deploy'){
       //      agent {label 'linux_slave'}
         //    input{
