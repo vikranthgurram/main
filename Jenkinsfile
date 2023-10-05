@@ -40,8 +40,9 @@ pipeline {
             agent any
             steps {
                 script{
-                sshagent(['build-server-key']) {
+            sshagent(['Node3_key']) {
                     echo "Packaging the code on new slave"
+                   // ss "ssh  -o StrictHostKeyChecking=no ec2-user@172.31.90.129 'mvn package'"              
                     sh "scp -o StrictHostKeyChecking=no server-config.sh ${BUILD_SERVER_IP}:/home/ec2-user"
                     sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER_IP} 'bash ~/server-config.sh'"
                 }
