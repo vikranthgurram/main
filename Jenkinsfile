@@ -1,53 +1,69 @@
 pipeline {
-    agent any
-    parameters{
-        string(name:'Env',defaultValue:'Test',description:'version to deploy')
-        booleanParam(name:'executeTests',defaultValue:true,description:'decided to run')
-        choice(name:'APPVERSION',choices:['1:1','2:1'])
-    }
-        stages {
-            stage('Compile'){
-               steps{
-                   script{
-                       echo'Compile the code'
-                   }
-               }
-           }
-           stage('Unittest'){
-               when{
-                   expression{
-                       params.executeTests ==true
-                   }
-               } 
-               steps{
-                   script{
-                       echo'Testing the code in ${params:Env} env'
-                   }
-               }
-              // post{
-                //   always{
-                  //     junit 'target/surefire-reports/*.xml'
-                 //  }
-              // }
-           }
-           
-           stage('Package'){
-               agent {label 'Node2AWS'}
-               input{
-                    message "Please approve to deploy"
-                    ok "yes, to deploy"
-                    parameters{
-                        choice(name:'NEWVERSION',choices:['1.2','1.3','1.4'])
-                    }
+    agent none
+
+  //  tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+     //   maven "mymaven"
+   // }  
+   // environment{
+      //  BUILD_SERVER_IP='ec2-user@172.31.22.208'
+   // }
+
+    stages {
+        stage('Compile') {
+            agent any
+            steps {
+                
+               // git 'https://github.com/preethid/addressbook.git'                
+                sh "mvn compile"    
+                           
+            }           
+        }
+        stage('UnitTest') {
+            agent any
+            steps {                
+                sh "mvn test"
+            }
+            post{
+                always{
+                    junit 'target/surefire-reports/*.xml'
                 }
-               steps{
-                   script{
-                       echo'Package the code ${params.APPVERSION}'
-                       echo'Package the code ${params.NEWVERSION}'  
-                   }
-               }
-           }
-           
-           
-       }
+            }           
+        }
+        stage('package') {
+            // agent {label 'linux_slave'}
+            // when{
+            //     expression{
+            //         BRANCH_NAME == 'dev' || BRANCH_NAME == 'develop'
+            //     }
+            // }
+            agent any
+            steps {
+                script{
+                sshagent(['build-server-key']) {
+                    echo "Packaging the code on new slave"
+                    sh "scp -o StrictHostKeyChecking=no server-config.sh ${BUILD_SERVER_IP}:/home/ec2-user"
+                    sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER_IP} 'bash ~/server-config.sh'"
+                }
+               
+              
+            }           
+        }
+        }
+    //    stage('Deploy'){
+      //      agent {label 'linux_slave'}
+        //    input{
+          //          message "Please approve to deploy"
+            //        ok "yes, to deploy"
+              //      parameters{
+                //        choice(name:'NEWVERSION',choices:['1.2','1.3','1.4'])
+                 //   }
+               // }
+          //  steps{
+                
+            //    echo "Deploying to Test"
+          //  }
+       // }
+        
+    }
 }
