@@ -22,6 +22,15 @@
                // }
            // }           
         }
+
+     stage('Package') {
+            agent {label 'Node2AWS'}
+            steps {                
+                sh "mvn package"
+            }          
+        }
+
+     
       //  stage('Package') {
         //    agent any
           //  steps {
