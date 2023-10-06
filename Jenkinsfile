@@ -28,7 +28,7 @@
                 script{
                   echo "Packaging the code on new slave"
               sshagent(['Node3_key']) {             
-                    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.90.129 'bash ~/server-config.sh'"
+                    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.90.129 'bash ~/server-script.sh'"
                     }
                 }
               
