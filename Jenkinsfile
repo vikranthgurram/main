@@ -22,7 +22,7 @@
                // }
            // }           
         }
-        stage('package') {
+        stage('Package') {
             agent any
             steps {
             // script{
